@@ -29,9 +29,13 @@ class DemoSystem(core.System):
         self.renderer.pop()
         self.renderer.turn(random.randrange(-50, 1))
 
-if __name__ == "__main__":
+
+def main():
     s = DemoSystem(renderer=GLRenderer(scale=1, size=(800, 800)))
     s.construct(depth=10)
     for i in range(5):
         s.renderer = GLRenderer(scale=3, size=(800, 800))
         s.render()
+
+if __name__ == "__main__":
+    main()
