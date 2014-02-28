@@ -1,8 +1,5 @@
-import core
-import random
-
-from render.gl_renderer import GLRenderer
-
+import lsys.core as core
+#import random
 
 class DemoSystem(core.System):
     def __init__(self, *args, **kwargs):
@@ -18,24 +15,23 @@ class DemoSystem(core.System):
             }, axiom="0", **kwargs)
 
     def draw_segment(self):
-        self.renderer.draw_segment(random.randrange(0, 11) / 3)
-        self.renderer.turn(random.randrange(-3, 4))
+        self.renderer.draw_segment(5)
+        #self.renderer.turn(1)
 
     def push_left(self):
         self.renderer.push()
-        self.renderer.turn(random.randrange(0, 50))
+        self.renderer.turn(45)
 
     def pop_right(self):
         self.renderer.pop()
-        self.renderer.turn(random.randrange(-50, 1))
+        self.renderer.turn(-45)
 
 
 def main():
+    from lsys.render.gl_renderer import GLRenderer
     s = DemoSystem(renderer=GLRenderer(scale=1, size=(800, 800)))
     s.construct(depth=10)
-    for i in range(5):
-        s.renderer = GLRenderer(scale=3, size=(800, 800))
-        s.render()
+    s.render()
 
 if __name__ == "__main__":
     main()

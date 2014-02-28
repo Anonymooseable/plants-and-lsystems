@@ -1,2 +1,2 @@
-import core
-import render
+from . import core
+from . import render

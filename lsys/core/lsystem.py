@@ -23,5 +23,5 @@ class System:
 
     def render(self):
         for action in self.expanded:
-            self.actions[action]()
+            self.actions.get(action, lambda: None)()
         self.renderer.display()
