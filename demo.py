@@ -4,15 +4,12 @@ import lsys.core as core
 
 class DemoSystem(core.System):
     def __init__(self, *args, **kwargs):
-        lbranch = ["push", "left", "branch", "pop"]
-        rbranch = ["push", "right", "branch", "pop"]
+        lbranch = ["pushl", "muchsmaller", "push", "left", "branch", "pop", "popl"]
+        rbranch = ["pushl", "muchsmaller", "push", "right", "branch", "pop", "popl"]
         super().__init__(rules={
-            "root": ["exfw"] + (lbranch + ["phatfw", "smaller"] + rbranch + ["phatfw", "smaller"]) * 3 + ["root"],
-            "branch": ["phatfw"] + (lbranch + ["exfw", "exfw"] + rbranch + ["exfw", "exfw"]) * 3 + ["branch"],
-            "exfw": ["exfw", "exfw"],
-            "phatfw": ["phatfw", "phatfw", "exfw", "exfw"],
+            "root": ["fw"] + (lbranch + ["fw", "smaller"] + rbranch + ["fw", "smaller"]) * 2 + ["root"],
+            "branch": ["fw"] + (lbranch + ["fw"] + rbranch + ["fw"]) * 2 + ["muchsmaller", "branch"],
         }, actions={
-            "exfw": self.fw,
             "fw": self.fw,
             "push": self.push,
             "pop": self.pop,
@@ -20,6 +17,7 @@ class DemoSystem(core.System):
             "right": self.right,
             "branch": self.fw,
             "smaller": self.smaller,
+            "muchsmaller": self.muchsmaller,
             "pushl": self.pushl,
             "popl": self.popl,
         }, axiom=["root"], **kwargs)
@@ -27,10 +25,13 @@ class DemoSystem(core.System):
 
     def fw(self):
         self.renderer.draw_segment(self.length_stack[-1])
-        #self.renderer.turn(-0.005)
+        self.renderer.turn(-1)
 
     def smaller(self):
         self.length_stack[-1] *= 0.9
+
+    def muchsmaller(self):
+        self.length_stack[-1] *= 0.4
 
     def left(self):
         self.renderer.turn(50)
@@ -57,14 +58,14 @@ def main():
 
     if mode == "opengl":
         from lsys.render.gl_renderer import GLRenderer
-        r = GLRenderer(scale=0.032, size=(800, 800))
+        r = GLRenderer(scale=4, size=(800, 800))
         import OpenGL.GL as GL
         GL.glColor3f(0.2, 1.0, 0.0)
     elif mode == "turtle":
         from lsys.render.turtle_renderer import TurtleRenderer
         r = TurtleRenderer()
     s = DemoSystem(renderer=r)
-    s.construct(depth=6, debug=False)
+    s.construct(depth=7, debug=False)
     print(s.expanded.count("push"), "pushes,", s.expanded.count("pop"), "pops")
     s.render()
 
