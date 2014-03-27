@@ -7,19 +7,20 @@ class DemoSystem(core.System):
         lbranch = ["pushl", "muchsmaller", "push", "left", "branch", "pop", "popl"]
         rbranch = ["pushl", "muchsmaller", "push", "right", "branch", "pop", "popl"]
         super().__init__(rules={
-            "root": ["fw"] + (lbranch + ["fw", "smaller"] + rbranch + ["fw", "smaller"]) * 2 + ["root"],
-            "branch": ["fw"] + (lbranch + ["fw"] + rbranch + ["fw"]) * 2 + ["muchsmaller", "branch"],
+            "root": ["fw"] + (lbranch + ["fw", "smaller", "rotz"] + rbranch + ["fw", "smaller", "rotz"]) * 2 + ["rotz", "root"],
+            "branch": ["fw"] + (lbranch + ["fw"] + rbranch + ["fw"]) * 2 + ["muchsmaller", "rotz", "branch"],
         }, actions={
             "fw": self.fw,
             "push": self.push,
             "pop": self.pop,
             "left": self.left,
             "right": self.right,
-            "branch": self.fw,
+            "branch": self.branch,
             "smaller": self.smaller,
             "muchsmaller": self.muchsmaller,
             "pushl": self.pushl,
             "popl": self.popl,
+            "rotz": self.rotz,
         }, axiom=["root"], **kwargs)
         self.length_stack = [10]
 
@@ -27,17 +28,20 @@ class DemoSystem(core.System):
         self.renderer.draw_segment(self.length_stack[-1])
         self.renderer.turn(-1)
 
+    def branch(self): # Leaves should be slightly bigger to compensate for the fact that they're not expanded
+        self.renderer.draw_segment(self.length_stack[-1] * 4)
+
     def smaller(self):
         self.length_stack[-1] *= 0.9
 
     def muchsmaller(self):
-        self.length_stack[-1] *= 0.4
+        self.length_stack[-1] *= 0.5
 
     def left(self):
-        self.renderer.turn(50)
+        self.renderer.turn(80)
 
     def right(self):
-        self.renderer.turn(-50)
+        self.renderer.turn(-80)
 
     def push(self):
         self.renderer.push()
@@ -50,6 +54,9 @@ class DemoSystem(core.System):
 
     def popl(self):
         self.length_stack.pop()
+
+    def rotz(self):
+        self.renderer.rotz(10)
 
 
 def main():

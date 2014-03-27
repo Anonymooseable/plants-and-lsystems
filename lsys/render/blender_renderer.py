@@ -9,7 +9,7 @@ class BlenderMeshRenderer(Renderer):
     def __init__(self, *args, **kwargs):
         self.mesh = bpy.data.meshes.new(name="LSystem")
         self.object = bpy.data.objects.new(object_data=self.mesh, name="LSystem")
-        self.object.matrix_local = mathutils.Matrix.Translation(bpy.context.scene.cursor_location) * mathutils.Matrix.Scale(0.001, 4)
+        self.object.matrix_local = mathutils.Matrix.Translation(bpy.context.scene.cursor_location) * mathutils.Matrix.Scale(kwargs.get("scale", 1), 4)
         self.stack = []
         self.matrix = mathutils.Matrix()
 
@@ -46,3 +46,6 @@ class BlenderMeshRenderer(Renderer):
         self.mesh.validate()
         self.mesh.update()
         bpy.context.scene.objects.link(self.object)
+
+    def rotz(self, angle):
+        self.matrix *= mathutils.Matrix.Rotation(angle / 180 * math.pi, 4, 'X')
