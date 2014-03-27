@@ -9,6 +9,7 @@ class BlenderMeshRenderer(Renderer):
     def __init__(self, *args, **kwargs):
         self.mesh = bpy.data.meshes.new(name="LSystem")
         self.object = bpy.data.objects.new(object_data=self.mesh, name="LSystem")
+        self.object.matrix_local = mathutils.Matrix.Translation(bpy.context.scene.cursor_location) * mathutils.Matrix.Scale(0.001, 4)
         self.stack = []
         self.matrix = mathutils.Matrix()
 
@@ -21,7 +22,6 @@ class BlenderMeshRenderer(Renderer):
     def draw_segment(self, length):
         point_idx = len(self.points)
         point = mathutils.Vector((0, 0, length)) * self.matrix + self.points[self.prev_point]
-        # + self.translate
         self.points.append(point)
         #self.matrix *= mathutils.Matrix.Translation(mathutils.Vector((0, 0, length)))
         self.lines.append((self.prev_point, point_idx))
@@ -36,6 +36,10 @@ class BlenderMeshRenderer(Renderer):
 
     def turn(self, angle):
         self.matrix *= mathutils.Matrix.Rotation(angle / 180 * math.pi, 4, 'Y')
+
+    def scale(self, factor):
+        self.matrix *= mathutils.Matrix.Scale(factor, 4) #* self.matrix
+        pass
 
     def display(self):
         self.mesh.from_pydata(self.points, self.lines, [])

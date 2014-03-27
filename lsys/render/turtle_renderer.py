@@ -1,4 +1,5 @@
 import turtle
+import time
 
 from . import Renderer
 
@@ -6,6 +7,7 @@ from . import Renderer
 class TurtleRenderer(Renderer):
     def __init__(self):
         self.stack = []
+        turtle.left(90)
 
     def draw_segment(self, length):
         turtle.pd()
@@ -22,3 +24,6 @@ class TurtleRenderer(Renderer):
 
     def turn(self, angle):
         turtle.left(angle)
+
+    def display(self):
+        time.sleep(5)

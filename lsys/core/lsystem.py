@@ -11,14 +11,19 @@ class System:
         self.expanded = []
         self.renderer = renderer
 
-    def construct(self, depth):
+    def construct(self, depth, debug=False):
         actions = self.axiom
-        actions_new = []
         for i in range(depth):
+            actions_new = []
+            if debug:
+                print("Iteration", i, ":", actions)
             for action in actions:
                 actions_new.extend(self.rules.get(action, [action]))
             actions = actions_new
             actions_new = []
+
+        if debug:
+            print("Result:", actions)
         self.expanded = actions
 
     def render(self):
