@@ -8,15 +8,15 @@ for p in (
         sys.path.append(p)
         break
 
-import demo
+import fern
 import lsys
 import lsys.render.blender_renderer as bmr
 import imp
-imp.reload(demo)
+imp.reload(fern)
 imp.reload(lsys)
 imp.reload(bmr)
 
-s = demo.DemoSystem(renderer=bmr.BlenderMeshRenderer(scale=0.1))
+s = fern.FernSystem(renderer=bmr.BlenderMeshRenderer(scale=0.1))
 
 s.construct(depth=7)
 s.render()
