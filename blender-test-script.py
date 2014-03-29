@@ -8,9 +8,9 @@ for p in (
         sys.path.append(p)
         break
 
-import fern
 import lsys
 import lsys.render.blender_renderer as bmr
+import lsys.example.fern as fern
 import imp
 imp.reload(fern)
 imp.reload(lsys)

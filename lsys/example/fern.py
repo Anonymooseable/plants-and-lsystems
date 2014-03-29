@@ -2,7 +2,7 @@ import lsys.core as core
 #import random
 
 
-class DemoSystem(core.System):
+class FernSystem(core.System):
     def __init__(self, *args, **kwargs):
         lbranch = [
             "pushl", "muchsmaller", "push", "left", "branch", "pop", "popl"]
@@ -75,7 +75,7 @@ def main():
     elif mode == "turtle":
         from lsys.render.turtle_renderer import TurtleRenderer
         r = TurtleRenderer()
-    s = DemoSystem(renderer=r)
+    s = FernSystem(renderer=r)
     s.construct(depth=6, debug=False)
     print(s.expanded.count("push"), "pushes,", s.expanded.count("pop"), "pops")
     s.render()
