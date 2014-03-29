@@ -4,11 +4,15 @@ import lsys.core as core
 
 class DemoSystem(core.System):
     def __init__(self, *args, **kwargs):
-        lbranch = ["pushl", "muchsmaller", "push", "left", "branch", "pop", "popl"]
-        rbranch = ["pushl", "muchsmaller", "push", "right", "branch", "pop", "popl"]
+        lbranch = [
+            "pushl", "muchsmaller", "push", "left", "branch", "pop", "popl"]
+        rbranch = [
+            "pushl", "muchsmaller", "push", "right", "branch", "pop", "popl"]
         super().__init__(rules={
-            "root": ["fw"] + (lbranch + ["fw", "smaller", "rotz"] + rbranch + ["fw", "smaller", "rotz"]) * 2 + ["rotz", "root"],
-            "branch": ["fw"] + (lbranch + ["fw"] + rbranch + ["fw"]) * 2 + ["muchsmaller", "rotz", "branch"],
+            "root": ["fw"] + (lbranch + ["fw", "smaller", "rotz"] + rbranch +
+                ["fw", "smaller", "rotz"]) * 3 + ["rotz", "root"],
+            "branch": ["fw"] + (lbranch + ["fw", "rotz"] + rbranch +
+                ["fw", "rotz"]) * 3 + ["muchsmaller", "rotz", "branch"],
         }, actions={
             "fw": self.fw,
             "push": self.push,
@@ -28,14 +32,14 @@ class DemoSystem(core.System):
         self.renderer.draw_segment(self.length_stack[-1])
         self.renderer.turn(-1)
 
-    def branch(self): # Leaves should be slightly bigger to compensate for the fact that they're not expanded
+    def branch(self):
         self.renderer.draw_segment(self.length_stack[-1] * 4)
 
     def smaller(self):
         self.length_stack[-1] *= 0.9
 
     def muchsmaller(self):
-        self.length_stack[-1] *= 0.5
+        self.length_stack[-1] *= 0.4
 
     def left(self):
         self.renderer.turn(80)
@@ -56,7 +60,7 @@ class DemoSystem(core.System):
         self.length_stack.pop()
 
     def rotz(self):
-        self.renderer.rotz(10)
+        self.renderer.rotz(1)
 
 
 def main():
@@ -72,7 +76,7 @@ def main():
         from lsys.render.turtle_renderer import TurtleRenderer
         r = TurtleRenderer()
     s = DemoSystem(renderer=r)
-    s.construct(depth=7, debug=False)
+    s.construct(depth=6, debug=False)
     print(s.expanded.count("push"), "pushes,", s.expanded.count("pop"), "pops")
     s.render()
 

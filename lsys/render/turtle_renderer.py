@@ -27,3 +27,6 @@ class TurtleRenderer(Renderer):
 
     def display(self):
         time.sleep(5)
+
+    def rotz(self, arg):
+        pass

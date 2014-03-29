@@ -88,3 +88,6 @@ class GLRenderer(Renderer):
                 GL.glPopMatrix()
             pygame.display.flip()
             self.clock.tick(30)
+
+    def rotz(self, arg):
+        pass
