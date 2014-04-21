@@ -31,7 +31,7 @@ class TurtleDrawSystem(System):
     def __init__(self, *args, **kwargs):
         super().__init__(rules={
             "1": ["1", "1"],
-            "0": ["1", "[", "0", "]", "1"]
+            "0": ["1", "[", "0", "]", "0"]
         }, actions={
             "1": self.draw_segment,
             "0": self.draw_segment,
@@ -43,7 +43,6 @@ class TurtleDrawSystem(System):
     def draw_segment(self):
         turtle.pd()
         turtle.forward(3)
-        turtle.left(1)
         turtle.pu()
 
     def push(self):
