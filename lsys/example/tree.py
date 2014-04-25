@@ -2,25 +2,11 @@ import lsys.core as core
 import random
 import math
 
-class StochasticRule:
-    def __init__(self, *output_sets):
-        self.output_sets = output_sets
-        self.sum = sum([s[1] for s in output_sets])
-
-    def __iter__(self):
-        r = random.randrange(self.sum + 1)
-        subtotal = 0
-        for s, factor in self.output_sets:
-            subtotal += factor
-            if r <= subtotal:
-                return iter(s)
-        
-
 
 class FernSystem(core.System):
     def __init__(self, *args, **kwargs):
         super().__init__(rules={
-            "branch": StochasticRule(
+            "branch": core.StochasticRule(
                     (["fw", "push", "left", "smaller", "branch",
                       "pop", "push", "right", "smaller", "branch", "pop"], 1),
                     (["fw", "push", "left", "smaller", "branch",
@@ -80,8 +66,7 @@ def main():
         from lsys.render.turtle_renderer import TurtleRenderer
         r = TurtleRenderer()
     s = FernSystem(renderer=r)
-    s.construct(depth=6, debug=False)
-    print(s.expanded.count("push"), "pushes,", s.expanded.count("pop"), "pops")
+    s.construct(depth=12, debug=False)
     s.render()
 
 if __name__ == "__main__":
