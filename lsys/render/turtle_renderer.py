@@ -8,6 +8,9 @@ class TurtleRenderer(Renderer):
     def __init__(self):
         self.stack = []
         turtle.left(90)
+        turtle.pu()
+        turtle.sety(-270)
+        turtle.pd()
 
     def draw_segment(self, length):
         turtle.pd()
