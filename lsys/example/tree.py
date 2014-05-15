@@ -3,19 +3,21 @@ import random
 import math
 
 
-class FernSystem(core.System):
+class TreeSystem(core.System):
     def __init__(self, *args, **kwargs):
         super().__init__(rules={
             "branch": core.StochasticRule(
-                    #the chance of the below happening needs to be context sensitive
-                    #(higher chance as system gets bigger)
-                    (["fw", "push", "smaller", "branch","pop",], 3),
+                    (["fw", "push", "smaller", "branch","pop"], 3),
                     (["fw", "push", "left", "smaller", "branch","pop",
                       "push", "right", "smaller", "branch", "pop"], 2),
                     (["fw", "push", "left", "smaller", "branch","pop",
                       "push", "smaller", "branch","pop",
                       "push", "right", "smaller", "branch", "pop"], 2),
                     )
+            "fw": core.StochasticRule(
+                    (["fw","fw","fw"],math.floor(40/self.actions)+1)
+                    (["fw","fw"],math.floor(80/self.actions)+1)
+                    (["fw"],6)
         }, actions={
             "fw": self.fw,
             "push": self.push,
@@ -34,9 +36,6 @@ class FernSystem(core.System):
         self.renderer.draw_segment(self.length_stack[-1] * 4)
 
     def smaller(self):
-        #this should be done by the system so that one program
-        #can generate anything from a sapling to a ancient redwood
-        #(btw these are just notes to myself)
         self.length_stack[-1] /= (math.log(len(self.length_stack),math.e)/2.8)+1
         self.length_stack[-1] += random.random()*(self.length_stack[-1]/2.1)-(self.length_stack[-1]/4.2)
 

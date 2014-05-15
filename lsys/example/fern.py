@@ -69,14 +69,14 @@ def main():
 
     if mode == "opengl":
         from lsys.render.gl_renderer import GLRenderer
-        r = GLRenderer(scale=4, size=(800, 800))
+        r = GLRenderer(scale=6, size=(800, 800))
         import OpenGL.GL as GL
         GL.glColor3f(0.2, 1.0, 0.0)
     elif mode == "turtle":
         from lsys.render.turtle_renderer import TurtleRenderer
         r = TurtleRenderer()
     s = FernSystem(renderer=r)
-    s.construct(depth=6, debug=False)
+    s.construct(depth=3, debug=False)
     print(s.expanded.count("push"), "pushes,", s.expanded.count("pop"), "pops")
     s.render()
 
