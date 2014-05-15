@@ -1,12 +1,25 @@
 """
 
 """
-
+class NothingThere:
+    pass
 class GenerationContext:
     def __init__(self, previous_state=[], cur_depth=0):
         self.cur_depth = cur_depth
         self.previous_state = []
         self.your_position = 0
+
+    def before_me(self):
+        if self.your_position > 0:
+            return self.previous_state[self.your_position-1]
+        else:
+            return NothingThere()
+
+    def after_me(self):
+        try:
+            return self.previous_state[self.your_position+1]
+        except IndexError:
+            return NothingThere()
 
 class System:
     def __init__(self, rules, axiom):
