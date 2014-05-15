@@ -7,9 +7,9 @@ class TreeSystem(core.System):
     def __init__(self, *args, **kwargs):
         super().__init__(rules={
             "branch": core.StochasticRule(
-                    (["fw", "push", "smaller", "branch","pop"], 3),
+                    (["fw", "push", "smaller", "branch","pop"], 2),
                     (["fw", "push", "left", "smaller", "branch","pop",
-                      "push", "right", "smaller", "branch", "pop"], 2),
+                      "push", "right", "smaller", "branch", "pop"], 3),
                     (["fw", "push", "left", "smaller", "branch","pop",
                       "push", "smaller", "branch","pop",
                       "push", "right", "smaller", "branch", "pop"], 2),

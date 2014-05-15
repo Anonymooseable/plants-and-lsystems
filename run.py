@@ -1,3 +1,3 @@
-import lsys.example.tree
+import lsys.example.fern
 
-lsys.example.tree.main()
+lsys.example.fern.main()
