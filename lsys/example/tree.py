@@ -3,16 +3,21 @@ import random
 import math
 
 
-class FernSystem(core.System):
+class TreeSystem(core.System):
     def __init__(self, *args, **kwargs):
         super().__init__(rules={
             "branch": core.StochasticRule(
-                    (["fw", "push", "left", "smaller", "branch",
-                      "pop", "push", "right", "smaller", "branch", "pop"], 1),
-                    (["fw", "push", "left", "smaller", "branch",
-                      "pop", "push", "smaller", "branch",
-                      "pop", "push", "right", "smaller", "branch", "pop"], 1),
+                    (["fw", "push", "smaller", "branch","pop"], 3),
+                    (["fw", "push", "left", "smaller", "branch","pop",
+                      "push", "right", "smaller", "branch", "pop"], 2),
+                    (["fw", "push", "left", "smaller", "branch","pop",
+                      "push", "smaller", "branch","pop",
+                      "push", "right", "smaller", "branch", "pop"], 2),
                     )
+            "fw": core.StochasticRule(
+                    (["fw","fw","fw"],math.floor(40/self.actions)+1)
+                    (["fw","fw"],math.floor(80/self.actions)+1)
+                    (["fw"],6)
         }, actions={
             "fw": self.fw,
             "push": self.push,
@@ -21,7 +26,7 @@ class FernSystem(core.System):
             "right": self.right,
             "smaller": self.smaller,
         }, axiom=["branch"], **kwargs)
-        self.length_stack = [85]
+        self.length_stack = [140]
 
     def fw(self):
         self.renderer.draw_segment(self.length_stack[-1])
@@ -31,13 +36,14 @@ class FernSystem(core.System):
         self.renderer.draw_segment(self.length_stack[-1] * 4)
 
     def smaller(self):
-        self.length_stack[-1] /= math.log(len(self.length_stack)+1,math.e)*1.2
+        self.length_stack[-1] /= (math.log(len(self.length_stack),math.e)/2.8)+1
+        self.length_stack[-1] += random.random()*(self.length_stack[-1]/2.1)-(self.length_stack[-1]/4.2)
 
     def left(self):
-        self.renderer.turn(random.randrange(40,60))
+        self.renderer.turn(random.randrange(20,40))
 
     def right(self):
-        self.renderer.turn(-1*random.randrange(40,60))
+        self.renderer.turn(-1*random.randrange(20,40))
 
     def push(self):
         self.renderer.push ()
@@ -45,7 +51,7 @@ class FernSystem(core.System):
 
     def pop(self):
         self.renderer.pop()
-        self.renderer.turn(random.randrange(0,50)-25) # this makes the angle waver inside a branch
+        self.renderer.turn(random.randrange(0,30)-15) # this makes the angle waver inside a branch
                                                       # i.e. at every split the angles changes a bit
         self.length_stack.pop()
 
@@ -54,8 +60,8 @@ class FernSystem(core.System):
 
 
 def main():
-    mode = "opengl"
-    #mode = "turtle"
+    #mode = "opengl"
+    mode = "turtle"
 
     if mode == "opengl":
         from lsys.render.gl_renderer import GLRenderer
@@ -66,7 +72,7 @@ def main():
         from lsys.render.turtle_renderer import TurtleRenderer
         r = TurtleRenderer()
     s = FernSystem(renderer=r)
-    s.construct(depth=12, debug=False)
+    s.construct(depth=8, debug=False)
     s.render()
 
 if __name__ == "__main__":
