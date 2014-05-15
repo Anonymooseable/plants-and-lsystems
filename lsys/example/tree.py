@@ -5,9 +5,9 @@ import random
 import math
 
 
-class TreeSystem(core.System):
-    def __init__(self, *args, **kwargs):
-        super().__init__(rules={
+class TreeDrawer:
+    def __init__(self, renderer, depth=8):
+        self.system = core.System(rules={
             "branch": core.StochasticRule(
                     (["fw", "push", "smaller", "branch","pop"], 2),
                     (["fw", "push", "left", "smaller", "branch","pop",
@@ -16,14 +16,19 @@ class TreeSystem(core.System):
                       "push", "smaller", "branch","pop",
                       "push", "right", "smaller", "branch", "pop"], 2),
                     ),
-            "fw": ["fw","fw"]
-        }, actions={
+            "fw": lambda context: ["fw","fw"]
+        }, axiom=["branch"])
+
+        self.actions={
             "fw": self.fw,
             "push": self.push,
             "pop": self.pop,
             "left": self.left,
             "right": self.right,
-        }, axiom=["branch"], **kwargs)
+
+        self.renderer = renderer
+        self.depth = depth
+
     def clamp(self,lower, upper, val):
         return lower if lower>val else (upper if upper < val else val)
 
@@ -37,12 +42,18 @@ class TreeSystem(core.System):
         self.renderer.turn(self.clamp(-10,-50,random.gauss(-30,18)))
 
     def push(self):
-        self.renderer.push ()
+        self.renderer.push()
 
     def pop(self):
         self.renderer.pop()
         self.renderer.turn(random.gauss(0,5))
         #cela fait varier l'angle dans une branche
+
+    def draw(self):
+        actions = self.system.construct(depth=self.depth)
+        for action in actions:
+            self.actions.get(action, lambda: None)()
+        self.renderer.display()
 
 def main():
     mode = "opengl"
@@ -50,15 +61,17 @@ def main():
 
     if mode == "opengl":
         from lsys.render.gl_renderer import GLRenderer
-        r = GLRenderer(scale=0.1, size=(800, 800))
-        import OpenGL.GL as GL
-        GL.glColor3f(0.2, 1.0, 0.0)
+        r = GLRenderer(
+            scale=0.1,
+            size=(800, 800),
+            fg=(0.0, 0.4, 0.0, 1.0),
+            bg=(1.0, 1.0, 1.0, 1.0)
+        )
     elif mode == "turtle":
         from lsys.render.turtle_renderer import TurtleRenderer
         r = TurtleRenderer()
-    s = TreeSystem(renderer=r)
-    s.construct(8, debug=False)
-    s.render()
+    s = TreeDrawer(depth=8, renderer=r)
+    s.draw()
 
 if __name__ == "__main__":
     main()
