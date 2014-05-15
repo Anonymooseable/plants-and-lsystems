@@ -2,7 +2,7 @@ import sys
 import os
 for p in (
             "/Users/linus/Documents/Lessons/ISN/bac-lsystems",
-            "... put the full path to your git checkout of the repo here"
+            "C:/Users/Dirk Duckson/Documents/Interactive Art/Learning/L-systems ISN"
          ):
     if os.path.isdir(p):
         sys.path.append(p)
@@ -16,7 +16,6 @@ imp.reload(fern)
 imp.reload(lsys)
 imp.reload(bmr)
 
-s = fern.FernSystem(renderer=bmr.BlenderMeshRenderer(scale=0.1))
+s = fern.FernDrawer(renderer=bmr.BlenderMeshRenderer(scale=0.1), depth=7)
 
-s.construct(depth=7)
-s.render()
+s.draw()
