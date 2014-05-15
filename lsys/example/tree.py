@@ -7,6 +7,11 @@ import math
 
 class TreeDrawer:
     def __init__(self, renderer, depth=8):
+        def fw_rule(context):
+            return core.StochasticRule(
+                (["fw", "fw"], context.previous_state.count("fw")),
+                (["fw"], 2)
+                )(context)
         self.system = core.System(rules={
             "branch": core.StochasticRule(
                     (["fw", "push", "smaller", "branch","pop"], 2),
@@ -16,7 +21,7 @@ class TreeDrawer:
                       "push", "smaller", "branch","pop",
                       "push", "right", "smaller", "branch", "pop"], 2),
                     ),
-            "fw": lambda context: ["fw","fw"]
+            "fw": fw_rule
         }, axiom=["branch"])
 
         self.actions={
@@ -25,7 +30,7 @@ class TreeDrawer:
             "pop": self.pop,
             "left": self.left,
             "right": self.right,
-
+        }
         self.renderer = renderer
         self.depth = depth
 
@@ -63,7 +68,7 @@ def main():
         from lsys.render.gl_renderer import GLRenderer
         r = GLRenderer(
             scale=0.1,
-            size=(800, 800),
+            size=(700, 700),
             fg=(0.0, 0.4, 0.0, 1.0),
             bg=(1.0, 1.0, 1.0, 1.0)
         )
