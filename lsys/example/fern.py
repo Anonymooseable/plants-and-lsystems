@@ -1,3 +1,5 @@
+#Ceci est le fichier qui contient le L-Systeme spécifique de la fougère.
+
 import lsys.core as core
 import random
 
@@ -5,12 +7,18 @@ import random
 class FernSystem(core.System):
     def __init__(self, *args, **kwargs):
         branch = ["push", "muchsmaller", "turn", "fw", "branch", "pop"]
+        # ceci sert seulement à l'écriture plus efficace de ce qui suit
+        
         super().__init__(rules={
             "root": (branch + ["flip", "fw", "smaller"] + branch +
                      ["flip", "fw", "smaller"]) * 3 + ["root"],
             "branch": (branch + ["flip", "fw", "smaller"] + branch +
                        ["flip", "fw", "smaller"]) * 3 + ["smaller","branch"],
-            #cela correspond au règles
+            #Correspond au règles du L-Système: seulement les symboles
+            #"root" et "branch" sont des variables, le reste sont des
+            #constantes. Pour comprendre les règles, on conseille de comprendre
+            #les fonctions auquelles sont associés les symboles.
+            
         }, actions={
             "fw": self.fw,
             "push": self.push,
@@ -20,9 +28,19 @@ class FernSystem(core.System):
             "smaller": self.smaller,
             "muchsmaller": self.muchsmaller,
             "flip": self.flip,
+            #correspond à l'association de chaque symbole avec une fonction
+            #qui contribuera au dessin
+            
         }, axiom=["fw", "root"], **kwargs)
+            #ceci est l'axiome
         self.length_stack = [10]
+        #correspond au pile qui contiendra l'information de la longueur de la
+        #la ligne que dessinera le "stylo"
+        #10 est la valeur initiale
+
         self.flipped = False
+        #correspond au basculement de gauche à droite et vice versa entre chaque
+        #branche.
 
     def fw(self):
         self.renderer.draw_segment(self.length_stack[-1])
