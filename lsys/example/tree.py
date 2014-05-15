@@ -13,11 +13,8 @@ class TreeSystem(core.System):
                     (["fw", "push", "left", "smaller", "branch","pop",
                       "push", "smaller", "branch","pop",
                       "push", "right", "smaller", "branch", "pop"], 2),
-                    )
-            "fw": core.StochasticRule(
-                    (["fw","fw","fw"],math.floor(40/len(self.actions))+1)
-                    (["fw","fw"],math.floor(80/len(self.actions))+1)
-                    (["fw"],6)
+                    ),
+            "fw": ["fw","fw"]
         }, actions={
             "fw": self.fw,
             "push": self.push,
@@ -42,21 +39,21 @@ class TreeSystem(core.System):
         self.renderer.pop()
         self.renderer.turn(random.gauss(0,5)) #cela fait varier l'angle
                                              #dans une branche
-                         
+
 def main():
-    #mode = "opengl"
-    mode = "turtle"
+    mode = "opengl"
+    #mode = "turtle"
 
     if mode == "opengl":
         from lsys.render.gl_renderer import GLRenderer
-        r = GLRenderer(scale=4, size=(800, 800))
+        r = GLRenderer(scale=0.1, size=(800, 800))
         import OpenGL.GL as GL
         GL.glColor3f(0.2, 1.0, 0.0)
     elif mode == "turtle":
         from lsys.render.turtle_renderer import TurtleRenderer
         r = TurtleRenderer()
     s = TreeSystem(renderer=r)
-    s.construct(, debug=False)
+    s.construct(8, debug=False)
     s.render()
 
 if __name__ == "__main__":
