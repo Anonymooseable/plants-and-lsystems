@@ -46,6 +46,3 @@ class BlenderMeshRenderer(Renderer):
         self.mesh.validate()
         self.mesh.update()
         bpy.context.scene.objects.link(self.object)
-
-    def rotz(self, angle):
-        self.matrix *= mathutils.Matrix.Rotation(angle / 180 * math.pi, 4, 'X')
