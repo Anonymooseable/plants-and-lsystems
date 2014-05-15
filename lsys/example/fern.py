@@ -24,8 +24,8 @@ class FernDrawer:
         #seulement les symboles "root" et "branch" sont des variables, le reste
         #sont des constantes. Pour comprendre les règles, on conseille de
         #comprendre les fonctions auxquelles sont associés les symboles.
-        root_result = lambda context: (branch + ["flip", "fw", "smaller"]) * 3 + ["root"]
-        branch_result = lambda context: (branch + ["flip", "fw", "smaller"]) * 3 + ["smaller", "branch"]
+        root_result = lambda context: (branch + ["flip", "fw", "smaller"]) * 6 + ["root"]
+        branch_result = lambda context: (branch + ["flip", "fw", "smaller"]) * 6 + ["smaller", "branch"]
 
         self.system = core.System(rules={
             "root": root_result,
@@ -101,7 +101,7 @@ class FernDrawer:
         # Pile longueur des segments
         self.length_stack.append(self.length_stack[-1])
         #correspond à l'enregistrement de la longueur de la ligne que dessine
-        #le "stylo" et le placement de cette information en haut de la pile qui 
+        #le "stylo" et le placement de cette information en haut de la pile qui
         #stocke cette information ("length_stack")
 
     def pop(self):
@@ -128,8 +128,8 @@ class FernDrawer:
         ## 4. Définition du "main"
 
 def main():
-    #mode = "opengl"
-    mode = "turtle"
+    mode = "opengl"
+    #mode = "turtle"
 
     if mode == "opengl":
         from lsys.render.gl_renderer import GLRenderer
@@ -142,7 +142,7 @@ def main():
     elif mode == "turtle":
         from lsys.render.turtle_renderer import TurtleRenderer
         r = TurtleRenderer()
-    s = FernDrawer(depth=4, renderer=r)
+    s = FernDrawer(depth=5, renderer=r)
     s.draw()
 
 if __name__ == "__main__":
