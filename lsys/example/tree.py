@@ -1,3 +1,5 @@
+#Ceci est le fichier qui contient le L-Systeme spécifique pour l'arbre.
+
 import lsys.core as core
 import random
 import math
@@ -22,23 +24,25 @@ class TreeSystem(core.System):
             "left": self.left,
             "right": self.right,
         }, axiom=["branch"], **kwargs)
+    def clamp(self,lower, upper, val):
+        return lower if lower>val else (upper if upper < val else val)
 
     def fw(self):
         self.renderer.draw_segment(20)
 
     def left(self):
-        self.renderer.turn(random.gauss(20,6.5))
+        self.renderer.turn(self.clamp(10,50,random.gauss(30,18)))
 
     def right(self):
-        self.renderer.turn(random.gauss(-20,6.5))
+        self.renderer.turn(self.clamp(-10,-50,random.gauss(-30,18)))
 
     def push(self):
         self.renderer.push ()
 
     def pop(self):
         self.renderer.pop()
-        self.renderer.turn(random.gauss(0,5)) #cela fait varier l'angle
-                                             #dans une branche
+        self.renderer.turn(random.gauss(0,5))
+        #cela fait varier l'angle dans une branche
 
 def main():
     mode = "opengl"
