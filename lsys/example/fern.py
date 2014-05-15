@@ -33,7 +33,8 @@ class FernDrawer:
         }, axiom=["fw", "root"])
         #ci-dessus: l'axiome du système
 
-        #association de chaque symbole à une fonction qui contribuera au dessin
+        ## 2. Association de chaque symbole à une fonction qui contribuera au
+        #     dessin
         self.actions = {
             "fw": self.fw,
             "push": self.push,
@@ -56,6 +57,8 @@ class FernDrawer:
         #correspond au basculement de gauche à droite et vice versa entre chaque
         #branche.
         self.flipped = False
+
+        ## 3. Définition des fonctions
 
     def fw(self):
         """Dessiner un segment d'une branche.
@@ -121,6 +124,8 @@ class FernDrawer:
         self.renderer.display()
         #correspond au basculement de gauche à droite et vice versa entre chaque
         #branche
+
+        ## 4. Définition du "main"
 
 def main():
     #mode = "opengl"
