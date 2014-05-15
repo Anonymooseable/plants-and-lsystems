@@ -8,7 +8,7 @@ from . import Renderer
 
 
 class GLRenderer(Renderer):
-    def __init__(self, scale=1, size=(800, 600)):
+    def __init__(self, scale=1, size=(800, 600), bg=(0.0, 0.0, 0.0, 1.0), fg=(1.0, 1.0, 1.0, 1.0), width=1):
         pygame.display.init()
         pygame.display.set_mode(size, pygame.OPENGL | pygame.DOUBLEBUF | pygame.HWSURFACE)
         self.clock = pygame.time.Clock()
@@ -16,9 +16,9 @@ class GLRenderer(Renderer):
 
         self.draw_queue = [lambda self: GL.glClear(GL.GL_COLOR_BUFFER_BIT)]
 
-        GL.glClearColor(0.0, 0.0, 0.0, 1.0)
-        GL.glLineWidth(1)
-        GL.glColor3f(1.0, 1.0, 1.0)
+        GL.glClearColor(*bg)
+        GL.glLineWidth(width)
+        GL.glColor4f(*fg)
 
         GL.glViewport(0, 0, size[0], size[1])
         GL.glMatrixMode(GL.GL_PROJECTION)
@@ -30,6 +30,7 @@ class GLRenderer(Renderer):
         GL.glScalef(scale, scale, 0)
 
         self.list_id = GL.glGenLists(1)
+
         GL.glNewList(self.list_id, GL.GL_COMPILE)
         GL.glClear(GL.GL_COLOR_BUFFER_BIT)
 
