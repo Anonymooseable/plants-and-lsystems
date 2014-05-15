@@ -2,15 +2,17 @@ import lsys.core as core
 import random
 
 
-class FernSystem(core.System):
-    def __init__(self, *args, **kwargs):
+class FernDrawer:
+    def __init__(self, renderer, depth=7):
         branch = ["push", "muchsmaller", "turn", "fw", "branch", "pop"]
-        super().__init__(rules={
-            "root": (branch + ["flip", "fw", "smaller"] + branch +
-                     ["flip", "fw", "smaller"]) * 3 + ["root"],
-            "branch": (branch + ["flip", "fw", "smaller"] + branch +
-                       ["flip", "fw", "smaller"]) * 3 + ["smaller", "branch"],
-        }, actions={
+        root_result = lambda context: (branch + ["flip", "fw", "smaller"] + branch + ["flip", "fw", "smaller"]) * 3 + ["root"]
+        branch_result = lambda context: (branch + ["flip", "fw", "smaller"] + branch + ["flip", "fw", "smaller"]) * 3 + ["smaller", "branch"]
+        self.system = core.System(rules={
+            "root": root_result,
+            "branch": branch_result
+        }, axiom=["fw", "root"])
+
+        self.actions = {
             "fw": self.fw,
             "push": self.push,
             "pop": self.pop,
@@ -19,7 +21,10 @@ class FernSystem(core.System):
             "smaller": self.smaller,
             "muchsmaller": self.muchsmaller,
             "flip": self.flip,
-        }, axiom=["fw", "root"], **kwargs)
+        }
+
+        self.renderer = renderer
+        self.depth = depth
         self.length_stack = [10]
         self.flipped = False
 
@@ -50,6 +55,12 @@ class FernSystem(core.System):
     def flip(self):
         self.flipped = not self.flipped
 
+    def draw(self):
+        actions = self.system.construct(depth=self.depth)
+        for action in actions:
+            self.actions.get(action, lambda: None)()
+        self.renderer.display()
+
 
 def main():
     mode = "opengl"
@@ -66,10 +77,8 @@ def main():
     elif mode == "turtle":
         from lsys.render.turtle_renderer import TurtleRenderer
         r = TurtleRenderer()
-    s = FernSystem(renderer=r)
-    s.construct(depth=7, debug=False)
-    print(len(s.expanded), "instructions")
-    s.render()
+    s = FernDrawer(depth=4, renderer=r)
+    s.draw()
 
 if __name__ == "__main__":
     main()
