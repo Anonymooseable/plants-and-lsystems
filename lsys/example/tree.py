@@ -75,7 +75,7 @@ def main():
     elif mode == "turtle":
         from lsys.render.turtle_renderer import TurtleRenderer
         r = TurtleRenderer()
-    s = TreeDrawer(depth=8, renderer=r)
+    s = TreeDrawer(renderer=r)
     s.draw()
 
 if __name__ == "__main__":
