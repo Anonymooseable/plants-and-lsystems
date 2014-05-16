@@ -30,15 +30,16 @@ class GLRenderer(Renderer):
         GL.glScalef(scale, scale, 0)
 
         self.list_id = GL.glGenLists(1)
+        self.finished = False
 
         GL.glNewList(self.list_id, GL.GL_COMPILE)
         GL.glClear(GL.GL_COLOR_BUFFER_BIT)
 
     def defer_draw(fun):
-        #def wrapped(self, *args, **kwargs):
-        #    self.draw_queue.append(lambda self: fun(self, *args, **kwargs))
-        #return wrapped
-        return fun
+        def wrapped(self, *args, **kwargs):
+            if not self.finished:
+                fun(self, *args, **kwargs)
+        return wrapped
 
     @defer_draw
     def draw_segment(self, length):
@@ -60,8 +61,13 @@ class GLRenderer(Renderer):
     def turn(self, angle):
         GL.glRotatef(angle, 0.0, 0.0, 1.0)
 
+    def finish(self):
+        if not self.finished:
+            GL.glEndList()
+            self.finished = True
+
     def display(self):
-        GL.glEndList()
+        self.finish()
         quit = False
         while not quit:
             for event in pygame.event.get():
@@ -89,6 +95,12 @@ class GLRenderer(Renderer):
                 GL.glPopMatrix()
             pygame.display.flip()
             self.clock.tick(30)
+
+    def save_image(self):
+        self.finish()
+        GL.glCallList(self.list_id)
+        pygame.display.flip()
+        pygame.image.save(pygame.display.get_surface(), "image.bmp")
 
     def rotz(self, arg):
         pass
