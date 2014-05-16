@@ -1,0 +1,6 @@
+La code sur laquelle nous avons collaboraer se trouve dans "lsys" --> "example". Nous avons écrit "fern.py" et "tree.py". Pour exécuter l'un ou l'autre, exécuter "run.py" qui se trouve dans ce dossier.
+Le reste fait partie de la structure crée par Linus qui sert à généraliser tout les méchanismes des L-Systèmes afin de pouvoir les utiliser pour n'importe quel projet.
+
+"fern.py" est le fichier principale du projet et donc est le plus commenté. "tree.py" ressemble beaucoup à "fern.py" par rapport au structure de la code. Ce qui change fondamentalement c'est la nature du L-Système: l'idée derrière "tree.py" était d'explorer les L-Systèmes stochastiques et les L-Systèmes sensitives au contexte.
+
+Cristian a inclus ces propres fichiers aussi, qui datent du début du projet: ils se trouvent dans le dossier "tests". Il a écrit du code tout seul en premier (de façon rudimenatire, comme un brouillon) pour explorer ses propres compétences et par la suite apprendre comment améliorer cette code initiale, en travaillant avec Linus.

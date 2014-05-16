@@ -4,9 +4,13 @@ import imp
 
 while True:
     choice = input("Which example? [t]ree or [f]ern?")
-    if choice == "t":
-        imp.reload(tree)
-        tree.main()
-    elif choice == "f":
-        imp.reload(fern)
-        fern.main()
+    try:
+        if choice == "t":
+            imp.reload(tree)
+            tree.main()
+        elif choice == "f":
+            imp.reload(fern)
+            fern.main()
+    except Exception as e:
+        print(e.with_traceback())
+        

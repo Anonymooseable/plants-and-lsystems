@@ -8,7 +8,7 @@ from . import Renderer
 
 
 class GLRenderer(Renderer):
-    def __init__(self, scale=1, size=(800, 600), bg=(0.0, 0.0, 0.0, 1.0), fg=(1.0, 1.0, 1.0, 1.0), width=1):
+    def __init__(self, scale=2, size=(800, 600), bg=(0.0, 0.0, 0.0, 1.0), fg=(1.0, 1.0, 1.0, 1.0), width=1):
         pygame.display.init()
         pygame.display.set_mode(size, pygame.OPENGL | pygame.DOUBLEBUF | pygame.HWSURFACE)
         self.clock = pygame.time.Clock()
@@ -95,6 +95,7 @@ class GLRenderer(Renderer):
                 GL.glPopMatrix()
             pygame.display.flip()
             self.clock.tick(30)
+        pygame.quit()
 
     def save_image(self):
         self.finish()
