@@ -2,3 +2,8 @@ __pycache__
 .DS_Store
 *.pyc
 *.blend[1-9]
+
+*.aux
+*.log
+*.out
+*.synctex.gz
