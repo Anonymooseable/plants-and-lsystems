@@ -1,5 +1,6 @@
 #Ce fichier est un test des L-systemes sensitives au contexte, c'est-à-dire,
-#dont les règles varient selon une caracteristique du contexte
+#dont les règles varient selon une caracteristique du contexte (dans ce cas, la
+#règle pour le symbole "1" dépend du symbole qui précède et du symbole qui suit).
 
 import turtle
 #------génération du L-syteme------
