@@ -142,7 +142,7 @@ def main():
     elif mode == "turtle":
         from lsys.render.turtle_renderer import TurtleRenderer
         r = TurtleRenderer()
-    s = FernDrawer(depth=5, renderer=r)
+    s = FernDrawer(depth=6, renderer=r)
     s.draw()
 
 if __name__ == "__main__":

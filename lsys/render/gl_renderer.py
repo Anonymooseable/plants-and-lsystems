@@ -96,12 +96,3 @@ class GLRenderer(Renderer):
             pygame.display.flip()
             self.clock.tick(30)
         pygame.quit()
-
-    def save_image(self):
-        self.finish()
-        GL.glCallList(self.list_id)
-        pygame.display.flip()
-        pygame.image.save(pygame.display.get_surface(), "image.bmp")
-
-    def rotz(self, arg):
-        pass

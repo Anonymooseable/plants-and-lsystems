@@ -6,7 +6,7 @@ import math
 
 
 class TreeDrawer:
-    def __init__(self, renderer, depth=10):
+    def __init__(self, renderer, depth=13):
         def fw_rule(context):
             return core.StochasticRule(
                 (["fw", "fw_half"], 4/(context.cur_depth+1)+6),
